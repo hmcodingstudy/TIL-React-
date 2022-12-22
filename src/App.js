@@ -4,11 +4,12 @@ import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import './App.css';
 import data from './data.js';
 import Detail from './routes/Detail.js';
-import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
+import axios from 'axios'
 
 
 function App() {
-  let [item] = useState(data)
+  let [item, setItem] = useState(data)
   let navigate = useNavigate();
 
   return (
@@ -43,6 +44,17 @@ function App() {
                 })}
             </div>
           </div>
+          <button onClick={()=>{
+            axios.get('https://codingapple1.github.io/shop/data2.json')
+            .then((결과)=>{
+              let copy = [...item,...결과.data];
+              setItem(copy);
+              // console.log(item);
+            })
+            .catch(()=>{
+              console.log('실패하였습니다.')
+            })
+          }}>버튼</button>
           </>
         }/>
         {/* <Route path="/detail" element={<Detail item={item}/>}/> */}
