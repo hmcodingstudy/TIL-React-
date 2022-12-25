@@ -6,15 +6,16 @@ import data from './data.js';
 import Detail from './routes/Detail.js';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import axios from 'axios'
-
+import Cart from './routes/Cart.js'
 
 function App() {
   let [item, setItem] = useState(data)
+  let [_click, _setClick] = useState(1)
+
   let navigate = useNavigate();
 
   return (
     <div className="App">
-
       <Navbar bg="dark" variant="dark" className="">
         <Container>
           <Navbar.Brand href="#home">amondz</Navbar.Brand>
@@ -39,17 +40,16 @@ function App() {
               {
                 item.map((a, i) => {
                   return(
-                    <Card item={item[i]} i={i}/>
+                    <Card item={item[i]} i={i} key={i}/>
                   )
                 })}
             </div>
           </div>
-          <button onClick={()=>{
+          <button onClick={(e)=>{ e.stopPropagation();
             axios.get('https://codingapple1.github.io/shop/data2.json')
             .then((결과)=>{
               let copy = [...item,...결과.data];
               setItem(copy);
-              // console.log(item);
             })
             .catch(()=>{
               console.log('실패하였습니다.')
@@ -59,15 +59,16 @@ function App() {
         }/>
         {/* <Route path="/detail" element={<Detail item={item}/>}/> */}
         <Route path="/detail/:id" element={<Detail item={item}/>}/>
+        <Route path="/cart" element={ <Cart/> } /> 
 
-        <Route path="/about" element={<About/>}>
+        {/* <Route path="/about" element={<About/>}>
           <Route path="member" element={<div>멤버페이지입니다.</div>}></Route>
           <Route path="location" element={<div>위치 정보입니다.</div>}></Route>
         </Route>
         <Route path="/event" element={<Event/>}>
           <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>}></Route>
           <Route path="two" element={<div>생일기념 쿠폰받기</div>}></Route>
-        </Route>
+        </Route> */}
 
         {/* <Route path="*" element={<div>존재하지 않는 페이지입니다.</div>}/> */}
       </Routes>
